@@ -207,22 +207,14 @@ public class EvaluationService {
 		// Put the input into an array of characters
 		char[] nums = string.toCharArray();
 		for(int i = 0; i<nums.length; i++) {
-			// If the character is a letter throw an exception
-			if((nums[i] >= 65 && nums[i] <= 90) || (nums[i] >= 97 && nums[i] <= 122)) {
-				throw new IllegalArgumentException();
-			}
-			// If the character is @,:, or ! throw an exception
-			if(nums[i] == '@' || nums[i] == ':' || nums[i] == '!') {
-				throw new IllegalArgumentException();
-			}
 			// Check if the character is a number and add it to the result if it is
-			if(nums[i] != '(' && nums[i] != ')' && nums[i] != '-' && nums[i] != '.' && nums[i] != '+' && nums[i] != ' ') {
+			if(nums[i] >= 48 && nums[i] <= 57) {
 				result+= nums[i];
 				System.out.println(nums[i]);
 			}
 		}
 		
-		if(result.length() > 11) {
+		if(result.length() != 10) {
 			throw new IllegalArgumentException();
 		}
 		// Return the result
