@@ -1,8 +1,12 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class EvaluationService {
 
@@ -10,12 +14,25 @@ public class EvaluationService {
 	 * 1. Without using the StringBuilder or StringBuffer class, write a method that
 	 * reverses a String. Example: reverse("example"); -> "elpmaxe"
 	 * 
+	 * DONE
+	 * 
 	 * @param string
 	 * @return
 	 */
 	public String reverse(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		// Attributes, char arrays for holding the chars in the string and a string for writing the reverse into
+		char[] hold = new char[string.length()];
+		String result = "";
+		
+		// Pass the string into a character array in hold
+		hold = string.toCharArray();
+		// Go backwards through the character array and place the characters into the result string
+		for(int i = hold.length-1; i >= 0; i--) {
+			result = result + hold[i];
+		}
+		
+		// Return the reversed string
+		return result;
 	}
 
 	/**
@@ -27,8 +44,19 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		// Create an array to hold the words in the phrase and a string to hold the result
+		// Split the phrase into the individual words
+		// TODO split punctuated stuff as well
+		String[] words1 = phrase.split(" |-");
+		String result = "";
+		
+		// Loop through the individual words and take the first character in the word
+		for(String s : words1) {
+			s = s.toUpperCase();
+			result = result + s.charAt(0);
+		}
+		// Return the result
+		return result;
 	}
 
 	/**
@@ -39,6 +67,7 @@ public class EvaluationService {
 	 * exercise we'll say at least two.) A scalene triangle has all sides of
 	 * different lengths.
 	 *
+	 * DONE
 	 */
 	static class Triangle {
 		private double sideOne;
@@ -81,18 +110,24 @@ public class EvaluationService {
 		}
 
 		public boolean isEquilateral() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			// Check if any of the sides do not equal any of the other sides
+			if(sideOne != sideTwo || sideOne != sideThree || sideTwo != sideThree)
+				return false;
+			return true;
 		}
 
 		public boolean isIsosceles() {
-			// TODO Write an implementation for this method declaration
+			// Check if one of the pairs of sides is equal
+			if(sideOne == sideTwo || sideOne == sideThree || sideTwo == sideThree)
+				return true;
 			return false;
 		}
 
 		public boolean isScalene() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			// Check if any of the sides is equal to another side
+			if(sideOne == sideTwo || sideOne == sideThree || sideTwo == sideThree)
+				return false;
+			return true;
 		}
 
 	}
@@ -109,12 +144,30 @@ public class EvaluationService {
 	 * 
 	 * 3 + 2*1 + 2*3 + 2 + 1 = 3 + 2 + 6 + 3 = 5 + 9 = 14
 	 * 
+	 * DONE
+	 * 
 	 * @param string
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		// Create a TreeMap to hold the values and points for each letter
+		int score = 0;
+		TreeMap<Character, Integer> letters = new TreeMap<>();
+		letters.put('A', 1); letters.put('B', 3); letters.put('C', 3); letters.put('D', 2); letters.put('E', 1);
+		letters.put('F', 4); letters.put('G', 2); letters.put('H', 4); letters.put('I', 1); letters.put('J', 8);
+		letters.put('K', 5); letters.put('L', 1); letters.put('M', 3); letters.put('N', 1); letters.put('O', 1);
+		letters.put('P', 3); letters.put('Q', 10); letters.put('R', 1); letters.put('S', 1); letters.put('T', 1);
+		letters.put('U', 1); letters.put('V', 4); letters.put('W', 4); letters.put('X', 8); letters.put('Y', 4);
+		letters.put('Z', 10);
+		
+		// Pass the word into an array of characters
+		char[] word = string.toUpperCase().toCharArray();
+		// Loop through the array and add up the score according to the values in the TreeMap
+		for(char c:word) {
+			score+=letters.get(c);
+		}
+		// Return the resulting score
+		return score;
 	}
 
 	/**
@@ -149,8 +202,31 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		// TODO check length and check for only numbers
+		String result = "";
+		// Put the input into an array of characters
+		char[] nums = string.toCharArray();
+		for(int i = 0; i<nums.length; i++) {
+			// If the character is a letter throw an exception
+			if((nums[i] >= 65 && nums[i] <= 90) || (nums[i] >= 97 && nums[i] <= 122)) {
+				throw new IllegalArgumentException();
+			}
+			// If the character is @,:, or ! throw an exception
+			if(nums[i] == '@' || nums[i] == ':' || nums[i] == '!') {
+				throw new IllegalArgumentException();
+			}
+			// Check if the character is a number and add it to the result if it is
+			if(nums[i] != '(' && nums[i] != ')' && nums[i] != '-' && nums[i] != '.' && nums[i] != '+' && nums[i] != ' ') {
+				result+= nums[i];
+				System.out.println(nums[i]);
+			}
+		}
+		
+		if(result.length() > 11) {
+			throw new IllegalArgumentException();
+		}
+		// Return the result
+		return result;
 	}
 
 	/**
@@ -163,8 +239,29 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		// TODO don't count \n as a word
+		// Split the input into an array of strings
+		String[] sent = string.split(" |,|\n");
+		HashMap<String, Integer> result = new HashMap<>();
+		// Loop through the array of words
+		for(int i = 0; i < sent.length; i++) {
+			// Check to see if the TreeMap contains the word already and isn't empty
+			if(!result.containsKey(sent[i]) && !sent[i].isEmpty()) {
+				// If it doesn't then add it and go through the array
+				result.put(sent[i], 1);
+				for(int j = i + 1; j < sent.length; j++) {
+					// If the word is the same as the current word then increment the value in the Map
+					if(sent[i].equals(sent[j])) {
+						int inc = result.get(sent[i]);
+						inc++;
+						result.replace(sent[i], inc);
+					}
+				}
+			}
+		}
+		
+		// Return the result
+		return result;
 	}
 
 	/**
@@ -201,13 +298,41 @@ public class EvaluationService {
 	 * locating an item (or determining its absence) takes logarithmic time. A
 	 * binary search is a dichotomic divide and conquer search algorithm.
 	 * 
+	 * DONE
+	 * 
 	 */
-	static class BinarySearch<T> {
+	static class BinarySearch<T extends Comparable<T>> {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			// TODO Write an implementation for this method declaration
-			return 0;
+			// Hold the input value
+			T item = t;
+			// Get the upper and lower bounds of the search
+			int upper = sortedList.size();
+			int lower = 0;
+			// Set an initial value for the index
+			int result = sortedList.size()/2;
+			// Get the value at the selected index
+			T hold = sortedList.get(result);
+			System.out.println(hold);
+			// Loop the search while the item has not been found
+			while(item.compareTo(hold) != 0) {
+				// Test which direction to go in
+				if(item.compareTo(hold) < 0) {
+					// If the item is less than the result reset the upper bound and find a new result
+					upper = result;
+					result = (upper + lower) / 2;
+				} else {
+					// If the item is greater than the result reset the lower bound and find a new result
+					lower = result;
+					result = (upper + lower) / 2;
+				}
+				// Get the value at the new result index
+				hold = sortedList.get(result);
+			}
+			// Once the index is found, return it
+			return result;
+//			return 0;
 		}
 
 		public BinarySearch(List<T> sortedList) {
@@ -238,11 +363,27 @@ public class EvaluationService {
 	 * != 1^3 + 5^3 + 4^3 = 1 + 125 + 64 = 190 Write some code to determine whether
 	 * a number is an Armstrong number.
 	 * 
+	 * DONE?
+	 * 
 	 * @param input
 	 * @return
 	 */
 	public boolean isArmstrongNumber(int input) {
-		// TODO Write an implementation for this method declaration
+		// Pass the input into a string
+		String i = "" + input;
+		// Pass the string into a char array of the individual digits
+		char[] digits = i.toCharArray();
+		int result = 0;
+		// Loop through each digit
+		for(char c:digits) {
+			// Parse the digit into an int, then calculate the power of the digit to the number of digits and add it to the result
+			String hold = "" + c;
+			result += Math.pow(Integer.parseInt(hold), digits.length);
+		}
+		// Check if the resulting calculation is the same as the input
+		if(result == input) {
+			return true;
+		}
 		return false;
 	}
 
@@ -256,12 +397,36 @@ public class EvaluationService {
 	 * The alphabet used consists of ASCII letters a to z, inclusive, and is case
 	 * insensitive. Input will not contain non-ASCII symbols.
 	 * 
+	 * DONE
+	 * 
 	 * @param string
 	 * @return
 	 */
 	public boolean isPangram(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		// Pass the string into a character array to check the individual characters
+		char[] letters = string.toUpperCase().toCharArray();
+		// Create a treemap of letters and booleans to check off if each letter was used
+		TreeMap<Character, Boolean> alpha = new TreeMap<>();
+		alpha.put('A', false); alpha.put('B', false); alpha.put('C', false); alpha.put('D', false); alpha.put('E', false);
+		alpha.put('F', false); alpha.put('G', false); alpha.put('H', false); alpha.put('I', false); alpha.put('J', false);
+		alpha.put('K', false); alpha.put('L', false); alpha.put('M', false); alpha.put('N', false); alpha.put('O', false);
+		alpha.put('P', false); alpha.put('Q', false); alpha.put('R', false); alpha.put('S', false); alpha.put('T', false);
+		alpha.put('U', false); alpha.put('V', false); alpha.put('W', false); alpha.put('X', false); alpha.put('Y', false);
+		alpha.put('Z', false);
+		// Loop through each character in the input and check that letter off in the treemap
+		for(char c : letters) {
+			if(alpha.containsKey(c)) {
+				alpha.replace(c, true);
+			}
+		}
+		// Loop through the treemap and if any of the letters has a false value then return false
+		Set<Character> keys = alpha.keySet();
+		for(Character key : keys) {
+			if(!alpha.get(key)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	
@@ -300,8 +465,34 @@ public class EvaluationService {
 		}
 
 		public String rotate(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			// TODO Numbers and Punctuation needs to be handled
+			// Pass the input into an array of characters
+			char[] chars = string.toCharArray();
+			String result = "";
+			// Go through each character
+			for(char c : chars) {
+				// Check if the character is a lowercase letter
+				if(c >= 97 && c <= 122) {
+					// Check if the character needs to be wrapped around
+					if((char)(c + key) > 'z') {
+						result += (char)(c - (26-key));
+					} else {
+						result += (char)(c + key);
+					}
+				// Check if the character is an uppercase letter
+				} else if(c >= 65 && c <= 90) {
+					if((char)(c + key) > 'Z') {
+						result += (char)(c - (26-key));
+					} else {
+						result += (char)(c + key);
+					}
+				// If it's not a letter don't rotate it
+				} else {
+					result += "" + c;
+				}
+			}
+			// Return the result
+			return result;
 		}
 
 	}
@@ -333,6 +524,7 @@ public class EvaluationService {
 	 */
 	static class AtbashCipher {
 
+		
 		/**
 		 * Question 11
 		 * 
@@ -340,8 +532,58 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String encode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			// Lists of alphabet forward, backward, and upper and lower case
+			ArrayList<String> upperAlf = new ArrayList<String>();
+			ArrayList<String> lowerAlf = new ArrayList<String>();
+			ArrayList<String> reverseAlf = new ArrayList<String>();
+			
+			// Populate the arraylists
+			for(int i = 65; i < 91; i++) {
+				char c = (char)i;
+				upperAlf.add("" + c);
+			}
+			for(int i = 97; i < 123; i++) {
+				char c = (char)i;
+				lowerAlf.add("" + c);
+			}
+			for(int i = lowerAlf.size() - 1; i >= 0; i--) {
+				reverseAlf.add(lowerAlf.get(i));
+			}
+			
+			// Pass the input into an array of characters
+			char[] c = string.toCharArray();
+			String result = "";
+			int fixed = 0;
+			
+			// Check value of character, find reversed letter at index and append to result
+			for(int i = 0; i < c.length; i++) {
+				// Group at a fixed length
+				System.out.println(fixed);
+				if(fixed == 5 && i != c.length - 1) {
+					fixed = 0;
+					result += " ";
+				}
+				
+				// Find the index of the character
+				int index = -1;
+				if(upperAlf.contains("" + c[i])) {
+					index = upperAlf.indexOf("" + c[i]);
+				} else if(lowerAlf.contains("" + c[i])) {
+					index = lowerAlf.indexOf("" + c[i]);
+				}
+				
+				// Find the oppossite character and put it in the result
+				if(index != -1) {
+					result += reverseAlf.get(index);
+					fixed++;
+				} else if(c[i] != ' ' && c[i] != ',' && c[i] != '.') {
+					result += "" + c[i];
+					fixed++;
+				}
+			}
+			System.out.println("end");
+			// Return the result
+			return result;
 		}
 
 		/**
@@ -351,8 +593,41 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String decode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			// Lists of alphabet forward, backward, and upper and lower case
+			ArrayList<String> lowerAlf = new ArrayList<String>();
+			ArrayList<String> reverseAlf = new ArrayList<String>();
+			
+			// Populate the arraylists
+			for(int i = 97; i < 123; i++) {
+				char c = (char)i;
+				lowerAlf.add("" + c);
+			}
+			for(int i = lowerAlf.size() - 1; i >= 0; i--) {
+				reverseAlf.add(lowerAlf.get(i));
+			}
+						
+			// Pass the input into an array of characters
+			char[] c = string.toCharArray();
+			String result = "";
+						
+			// Check value of character, find reversed letter at index and append to result
+			for(int i = 0; i < c.length; i++) {				
+				// Find the index of the character
+				int index = -1;
+				if(reverseAlf.contains("" + c[i])) {
+					index = reverseAlf.indexOf("" + c[i]);
+				}
+						
+				// Find the oppossite character and put it in the result
+				if(index != -1) {
+					result += lowerAlf.get(index);
+				} else if(c[i] != ' ') {
+					result += "" + c[i];
+				}
+			}
+						
+			// Return the result
+			return result;
 		}
 	}
 
