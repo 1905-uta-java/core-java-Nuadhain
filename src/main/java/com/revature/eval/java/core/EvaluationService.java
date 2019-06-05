@@ -210,7 +210,6 @@ public class EvaluationService {
 			// Check if the character is a number and add it to the result if it is
 			if(nums[i] >= 48 && nums[i] <= 57) {
 				result+= nums[i];
-				System.out.println(nums[i]);
 			}
 		}
 		
@@ -306,7 +305,6 @@ public class EvaluationService {
 			int result = sortedList.size()/2;
 			// Get the value at the selected index
 			T hold = sortedList.get(result);
-			System.out.println(hold);
 			// Loop the search while the item has not been found
 			while(item.compareTo(hold) != 0) {
 				// Test which direction to go in
@@ -550,7 +548,6 @@ public class EvaluationService {
 			// Check value of character, find reversed letter at index and append to result
 			for(int i = 0; i < c.length; i++) {
 				// Group at a fixed length
-				System.out.println(fixed);
 				if(fixed == 5 && i != c.length - 1) {
 					fixed = 0;
 					result += " ";
@@ -573,7 +570,6 @@ public class EvaluationService {
 					fixed++;
 				}
 			}
-			System.out.println("end");
 			// Return the result
 			return result;
 		}
